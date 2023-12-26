@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import TypeProduct from "../../components/TypeProduct/TypeProduct";
 import {
   WrapperButton,
+  WrapperButtonMore,
   WrapperContainer,
   WrapperProducts,
   WrapperTypeProduct,
@@ -18,12 +19,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { useDebounceHooks } from "../../hooks/useDebounceHooks";
 import Loading from "../../components/LoadingComponent/Loading";
-import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
 
 const HomePage = () => {
   const searchProduct = useSelector((state) => state?.product?.search);
   const searchDebounce = useDebounceHooks(searchProduct, 500);
-  const [limit, setLimit] = useState(3);
+  const [limit, setLimit] = useState(10);
   const [typeProduct, setTypeProduct] = useState([]);
 
   //get all product
@@ -100,20 +100,28 @@ const HomePage = () => {
                 })}
               </WrapperProducts>
               <WrapperButton>
-                <ButtonComponent
+                <WrapperButtonMore
                   textButton="Xem thêm"
                   type="outline"
-                  styleButton={{ background: "#fff" }}
+                  styleButton={{
+                    background: "#fff",
+                    cursor: `${
+                      products?.total === products?.data?.length ||
+                      products?.totalPage === 1
+                        ? "not-allowed"
+                        : "pointer"
+                    }`,
+                  }}
                   styleTextButton={{
                     fontSize: "15px",
                     fontWeight: 400,
                   }}
-                  // disabled={
-                  //   products?.total === products?.data?.length ||
-                  //   products?.totalPage === products?.data?.length / limit
-                  // }
-                  onClick={() => setLimit((prev) => prev + 3)}
-                ></ButtonComponent>
+                  disabled={
+                    products?.total === products?.data?.length ||
+                    products?.totalPage === 1
+                  }
+                  onClick={() => setLimit((prev) => prev + 5)}
+                ></WrapperButtonMore>
               </WrapperButton>
             </WrapperContainer>
           </div>

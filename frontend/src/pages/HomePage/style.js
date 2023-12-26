@@ -14,8 +14,8 @@ export const WrapperButton = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
-    cursor: ${(props) => props.disabled ? 'not-allowed' : 'pointers'};
     & button.ant-btn {
+        cursor: ${(props) => props.disabled ? 'not-allowed' : 'pointer'};
         height: 38px;
         width: 240px;
         border: 1px solid rgb(8, 124, 249);
@@ -29,12 +29,13 @@ export const WrapperButton = styled.div`
     }
 `
 
-// export const WrapperButtonMore = styled(ButtonComponent)`
-//     & :hover {
-//         color: #fff;
-//         background-color: #087cf9;
-//     }
-// `
+export const WrapperButtonMore = styled(ButtonComponent)`
+    cursor: ${(props) => props.disabled ? 'not-allowed' : 'pointer'};
+    & :hover {
+        color: #fff;
+        background-color: #087cf9;
+    }
+`
 export const WrapperContainer = styled.div`
     width: calc(100% - 200px);
     height: max-content;

@@ -30,10 +30,15 @@ import ButtonComponent from "../ButtonComponent/ButtonComponent";
 import * as ProductService from "../../services/ProductService";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../LoadingComponent/Loading";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { addOrderProduct } from "../../redux/slices/orderSlide";
 
 const ProductDetailsComponent = ({ idProduct }) => {
   const user = useSelector((state) => state?.user);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
   const [numProduct, setNumProduct] = useState(1);
   const onChange = (e) => {
     setNumProduct(Number(e.target.value));
@@ -55,6 +60,26 @@ const ProductDetailsComponent = ({ idProduct }) => {
       setNumProduct(numProduct + 1);
     } else if (type === "descrease") {
       setNumProduct(numProduct === 0 ? 0 : numProduct - 1);
+    }
+  };
+
+  const handleAddOrderProduct = () => {
+    if (!user?.id) {
+      navigate("/sign-in", { state: location.pathname });
+    } else {
+      dispatch(
+        addOrderProduct({
+          orderItem: {
+            name: productDetails?.name,
+            amount: numProduct,
+            image: productDetails?.image,
+            price: productDetails?.price,
+            product: productDetails?._id,
+            discount: productDetails?.discount,
+            countInstock: productDetails?.countInStock,
+          },
+        })
+      );
     }
   };
 
@@ -209,6 +234,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
                 fontSize: "15px",
                 fontWeight: "700",
               }}
+              onClick={handleAddOrderProduct}
             />
             <ButtonComponent
               size={40}
